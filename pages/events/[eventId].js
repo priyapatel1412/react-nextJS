@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {getEventById, getFeaturedEvents} from '@/helpers/api-utils';
 import EventSummary from '@/components/event-detail/event-summary';
 import EventLogistics from '@/components/event-detail/event-logistics';
 import EventContent from '@/components/event-detail/event-content';
-import ErrorAlert from '@/components/ui/error-alert';
+import Head from 'next/head';
 
 export default function EventDetailPage({selectedEvent}) {
   if (!selectedEvent) {
@@ -15,6 +15,13 @@ export default function EventDetailPage({selectedEvent}) {
   }
   return (
     <>
+      <Head>
+        <title>{selectedEvent.title}</title>
+        <meta
+          name="description"
+          content="Find a lot of great events that allow you to evolve..."
+        />
+      </Head>
       <EventSummary title={selectedEvent.title} />
       <EventLogistics
         date={selectedEvent.date}

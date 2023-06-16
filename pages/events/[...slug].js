@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import Head from 'next/head';
 import EventList from '@/components/events/event-list';
 import ResultsTitle from '@/components/events/results-title';
 import Button from '@/components/ui/button';
@@ -12,6 +13,16 @@ export default function FilteredEventsPage({
   hasError,
   dateValue,
 }) {
+  // Reuse it for all if statements and in return statements
+  const pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for for ${dateValue.month}/${dateValue.year}`}
+      />
+    </Head>
+  );
   // Bellow section is an example of client side data fetching
   /**  
    *  const [loadedEvents, setLoadedEvents] = useState([]);
@@ -38,12 +49,21 @@ export default function FilteredEventsPage({
   }, [data]);
 
   if (!loadedEvents) {
-    return <p>Loading....</p>;
+    return 
+    <>
+      {pageHeadData}
+      <p>Loading....</p>;
+    </>
   }
   const filterData = router.query.slug;
 
   if (!filterData) {
-    return <p className="'center">Loading....</p>;
+    return 
+    <>
+      {pageHeadData}
+      <p className="'center">Loading....</p>;
+    </>
+ 
   }
 
   const filteredMonth = filterData[1];
@@ -89,6 +109,7 @@ export default function FilteredEventsPage({
   if (hasError) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p>Invalid filter.Please adjust value</p>
         </ErrorAlert>
@@ -103,6 +124,7 @@ export default function FilteredEventsPage({
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p>No events found for the choosen filter!</p>
         </ErrorAlert>
@@ -114,13 +136,12 @@ export default function FilteredEventsPage({
     );
   }
 
-  console.log('dateValue', dateValue);
   // when creating a Date object using the new Date(year, month) constructor, the month parameter is zero-based. It means the months are represented by numbers from 0 to 11, where 0 corresponds to January and 11 corresponds to December.
   const date = new Date(dateValue.year, dateValue.month - 1);
 
-  console.log('date', date);
   return (
     <div>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList events={filteredEvents} />
     </div>

@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import EventList from '@/components/events/event-list';
 import EventSearch from '@/components/events/events-search';
 import {useRouter} from 'next/router';
 import {getAllEvents} from '@/helpers/api-utils';
-
+import Head from 'next/head';
 export default function AllEventsPage({loadedEvents}) {
   const router = useRouter();
 
@@ -15,6 +15,13 @@ export default function AllEventsPage({loadedEvents}) {
 
   return (
     <>
+      <Head>
+        <title>All Events</title>
+        <meta
+          name="description"
+          content="Find a lot of great events that allow you to evolve..."
+        />
+      </Head>
       <EventSearch onSearch={findEventHandler} />
       <EventList events={loadedEvents} />
     </>
